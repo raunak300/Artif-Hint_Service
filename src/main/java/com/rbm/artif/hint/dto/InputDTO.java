@@ -7,9 +7,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class QuestionDTO {
+public class InputDTO {
 	String sessionId;
-    Integer Hints;
     String Question;
     String prevSolution;
     UsersDTO user;

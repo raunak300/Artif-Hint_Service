@@ -1,6 +1,6 @@
 package services;
 
-import com.rbm.artif.hint.dto.QuestionDTO;
+import com.rbm.artif.hint.dto.InputDTO;
 
 public class ProvideHintImpl implements ProvideHint{
 
@@ -28,17 +28,18 @@ public class ProvideHintImpl implements ProvideHint{
     }
 
     @Override
-    public String provideHint(QuestionDTO questionDTO) {
+    public String provideHint(InputDTO inputDTO) {
 
-        if(!checkHintCount(questionDTO.getUser().getEmail()) ){
+        if(!checkHintCount(inputDTO.getUser().getEmail()) ){
             return "";
 
         }
-
-        if(!checkValidSesssion(questionDTO.getUser().getEmail())){
+        if(!checkValidSesssion(inputDTO.getUser().getEmail())){
 
             return "";
         }
+
+        //call AI_Agent
 
 
         return "";
