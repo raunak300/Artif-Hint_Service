@@ -1,6 +1,5 @@
 package com.rbm.artif.hint.dto;
 
-import com.rbm.artif.hint.utilites.Premium;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 public class QuestionDTO {
 	String sessionId;
     Integer Hints;
-    Premium role;
     String Question;
-    String Solution;
+    String prevSolution;
+    UsersDTO user;
 }
