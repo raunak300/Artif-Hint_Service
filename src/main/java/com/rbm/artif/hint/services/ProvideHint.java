@@ -1,4 +1,4 @@
-package services;
+package com.rbm.artif.hint.services;
 
 import com.rbm.artif.hint.dto.InputDTO;
 import com.rbm.artif.hint.utilites.Premium;

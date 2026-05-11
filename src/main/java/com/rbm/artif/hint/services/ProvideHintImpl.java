@@ -1,4 +1,4 @@
-package services;
+package com.rbm.artif.hint.services;
 
 import com.rbm.artif.hint.Entity.Hints;
 import com.rbm.artif.hint.Entity.Session;
@@ -7,15 +7,17 @@ import com.rbm.artif.hint.repository.hintsDB;
 import com.rbm.artif.hint.repository.sessionDB;
 import com.rbm.artif.hint.utilites.Premium;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
+
+@Service
 public class ProvideHintImpl implements ProvideHint{
 
 
@@ -52,6 +54,8 @@ public class ProvideHintImpl implements ProvideHint{
                 hint=new Hints();
                 hint.setEmail(email);
                 hint.setPremium(premium);
+                System.out.println("Premium value = " + premium);
+                System.out.println("FREE equals? " + Premium.FREE.equals(premium));
                 hint.setUsage( Premium.FREE.equals(premium)? 2 : Premium.PREMIUM.equals(premium) ? 9 : 499 );
                 //expires at night 11:59:59
                 hint.setClosesAt(closesAt);
@@ -147,6 +151,6 @@ public class ProvideHintImpl implements ProvideHint{
 
 
 
-        return "";
+        return "working";
     }
 }
