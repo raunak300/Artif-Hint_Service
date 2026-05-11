@@ -6,7 +6,7 @@ import com.rbm.artif.hint.utilites.Premium;
 public interface ProvideHint {
 	public boolean checkHintCount(String email, Premium role);
 	
-	public void closeSession();
+	public Boolean closeSession(String email);
 
 	boolean checkValidSesssion(String email);
 

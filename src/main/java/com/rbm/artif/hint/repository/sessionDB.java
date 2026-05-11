@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface sessionDB extends MongoRepository<Session,String> {
-    public Optional findBySessionId(String sessionId);
+    public Optional<Session> findBySessionId(String sessionId);
 
+    public Optional<Session> findByEmail(String email);
+
+    public void deleteBySessionId(String sessionId);
 }

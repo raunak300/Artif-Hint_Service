@@ -11,8 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @RequiredArgsConstructor
 @Document(collection = "sessionDB")
 public class Session {
-    @Id
     public String sessionId;
+    @Id
     public String email;
     public boolean isActive;
 }

@@ -39,13 +39,12 @@ public class ProvideHintImpl implements ProvideHint{
         try {
             Hints hint=hintsDB.findById(email).orElse(null);
 
-            LocalDateTime endTime = LocalDateTime.of(
-                    LocalDate.now(),
-                    LocalTime.of(23, 59, 59)
-            );
-
+            //Getting LocalDate using UTC
+            LocalDate todayUTC = LocalDate.now(ZoneId.of("UTC"));
+            LocalDateTime endTime = LocalDateTime.of(todayUTC, LocalTime.MAX);
+            //assuming using UTC for Time in DB for any user at any timeZone
             Date closesAt = Date.from(
-                    endTime.atZone(ZoneId.systemDefault()).toInstant()
+                    endTime.atZone(ZoneId.of("UTC")).toInstant()
             );
 
             if(hint==null){
@@ -79,13 +78,30 @@ public class ProvideHintImpl implements ProvideHint{
     }
 
     @Override
-    public void closeSession() {
-        //need to close session in mongoDB
+    public Boolean closeSession(String email) {
+        //delete session from mdb
+        try {
+            //sessionDB.deleteBySessionId(sessionId);
+            sessionDB.deleteById(email); // this one will do things faster
+        }catch(Exception e){
+            throw new RuntimeException("Error in closing Session");
+        }
+        return true;
     }
 
     @Override
     public boolean checkValidSesssion(String email){
         //check in mdb session if it is correct or not
+        Session existingSession= new Session();
+
+        try{
+            existingSession = sessionDB.findById(email).orElse(null);
+            if(existingSession==null || existingSession.isActive()==false){
+                return false;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return true;
     }
 
@@ -100,7 +116,7 @@ public class ProvideHintImpl implements ProvideHint{
             sessionDB.save(savedUser);
         } catch (Exception e) {
             String message="Error in Creating Session";
-            new RuntimeException(message);
+            throw new RuntimeException(message);
         }
         return savedUser.getSessionId();
 
