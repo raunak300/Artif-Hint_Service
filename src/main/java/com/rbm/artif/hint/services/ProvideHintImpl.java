@@ -7,7 +7,9 @@ import com.rbm.artif.hint.repository.hintsDB;
 import com.rbm.artif.hint.repository.sessionDB;
 import com.rbm.artif.hint.utilites.Premium;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +26,12 @@ public class ProvideHintImpl implements ProvideHint{
 
     @Autowired
     private sessionDB sessionDB;
+
+    @Autowired
+    private Environment env;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
 
 
@@ -54,8 +62,8 @@ public class ProvideHintImpl implements ProvideHint{
                 hint=new Hints();
                 hint.setEmail(email);
                 hint.setPremium(premium);
-                System.out.println("Premium value = " + premium);
-                System.out.println("FREE equals? " + Premium.FREE.equals(premium));
+                //System.out.println("Premium value = " + premium);
+                //System.out.println("FREE equals? " + Premium.FREE.equals(premium));
                 hint.setUsage( Premium.FREE.equals(premium)? 2 : Premium.PREMIUM.equals(premium) ? 9 : 499 );
                 //expires at night 11:59:59
                 hint.setClosesAt(closesAt);
@@ -145,12 +153,25 @@ public class ProvideHintImpl implements ProvideHint{
             }
 
             //call AI_Agent --> will do it not a thing to do now
+
+            String agentURI= env.getProperty("AGENT_API");
+
+            webClientBuilder.build()
+                    .post()
+                    .uri(agentURI)
+                    .header("Content-Type","application/json")
+                    .bodyValue(inputDTO)
+                    .retrieve()
+                    .bodyToMono(String.class)   //need to have one object for this hence a changing thing
+                    .block();
+
+
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
 
 
 
-        return "working";
+        return "working";  //just for checking need to make a whole object for this
     }
 }
